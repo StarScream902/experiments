@@ -1,0 +1,9 @@
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json": "file:///home/saa/tests/linux-routing/routing-with-WG-VPN/provisioning/requirements.yaml",
+    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook": [
+      "file:///home/saa/tests/linux-routing/routing-with-WG-VPN/provisioning/wg-site-a.yml"
+    ],
+    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks": "file:///home/saa/tests/linux-routing/routing-with-WG-VPN/provisioning/roles/wireguard/tasks/main.yml"
+  }
+}

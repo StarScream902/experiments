@@ -1,0 +1,7 @@
+- job_name: singleline
+  pipeline_stages:
+  static_configs:
+  - labels:
+      job: logs-from-singleline-file
+      host: yourhost
+      __path__: /etc/promtail/logs/singleline.log

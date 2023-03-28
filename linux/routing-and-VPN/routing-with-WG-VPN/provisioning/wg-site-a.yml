@@ -1,0 +1,7 @@
+---
+- name: Configure WG server (site A)
+  hosts: site_a
+  become: true
+
+  roles:
+    - role: wireguard

@@ -1,0 +1,51 @@
+version: '3'
+
+volumes:
+  mongo-0-data:
+  mongo-1-data:
+  mongo-2-data:
+
+services:
+  mongo-0:
+    image: percona/percona-server-mongodb:4.4
+    expose:
+      - 27017:27017
+    volumes:
+      - mongo-0-data:/data/db
+    command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27017"]
+
+  mongo-1:
+    image: percona/percona-server-mongodb:4.4
+    expose:
+      - 27018:27017
+    volumes:
+      - mongo-1-data:/data/db
+    command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27017"]
+
+  mongo-2:
+    image: percona/percona-server-mongodb:4.4
+    expose:
+      - 27019:27017
+    volumes:
+      - mongo-2-data:/data/db
+    command: ["--replSet", "my-replica-set", "--bind_ip_all", "--port", "27017"]
+  
+  mongo-rs-init:
+    image: percona/percona-server-mongodb:4.4
+    entrypoint: '/bin/bash -c'
+    command:
+      - |
+        until mongo --host mongo-0 --quiet --eval 'getHostName()'; do sleep 1; done; echo "mongo-0 is ready" &&\
+        until mongo --host mongo-1 --quiet --eval 'getHostName()'; do sleep 1; done; echo "mongo-1 is ready" &&\
+        until mongo --host mongo-2 --quiet --eval 'getHostName()'; do sleep 1; done; echo "mongo-2 is ready" &&\
+        echo "Creating the replica set" &&\
+        mongo --host mongo-0 --quiet --eval 'rs.initiate( { _id : "my-replica-set", members: [ { _id: 0, host: "mongo-0:27017" }, { _id: 1, host: "mongo-1:27017" }, { _id: 2, host: "mongo-2:27017" } ] } )' &&\
+        echo "Getting the replica set status" &&\
+        while [ "$$(mongo --host mongo-0 --quiet --eval 'rs.status().myState')" -ne 1 ] ; do sleep 1; done; echo "replica set is ready" &&\
+        echo "Creating user" &&\
+        mongo --host "$$(mongo --host mongo-0 --quiet --eval 'rs.isMaster().primary')" --quiet --eval 'db.createUser ( { user: "test", pwd: "test", roles: [ { role: "readWrite", db: "test" } ] } );' &&\
+        mongo --host "mongodb://test:test@$$(mongo --host mongo-0 --quiet --eval 'rs.isMaster().primary')/test?replicaSet=my-replica-set&ssl=false" --quiet --eval 'db.test.insert({ x: 1 }); db.test.findOne()'
+    depends_on:
+      - mongo-0
+      - mongo-1
+      - mongo-2

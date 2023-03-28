@@ -1,0 +1,72 @@
+---
+server:
+  log_level: info
+  http_listen_port: 3101
+  
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+positions:
+  filename: "/etc/promtail/positions.yaml"
+
+scrape_configs:
+  - job_name: docker
+    pipeline_stages:
+      - match:
+          selector: '{docker_container_name=~"api-gateway-run-app-1"}'
+          stages:
+            - multiline:
+                firstline: '^\d{4}-\d{2}-\d{2}\s\d{1,2}:\d{2}:\d{2}.\d{3}\s+'
+                max_wait_time: 3s
+            - regex:
+                expression: '^(\s+)?(?P<time>\d{4}-\d{2}-\d{2}\s\d{1,2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+\d\s+---\s+\[(\s+)?(?P<process_name>[\w\s#-=,.]+)\]\s+(?P<class_name>[a-zA-Z0-9.]+)\s+:\s+(?P<event>(?s:.*))$'
+            - output:
+                source: event
+            - labels:
+                level:
+                class_name:
+      - match:
+          selector: '{docker_container_name=~"api-gateway-kafka-1"}'
+          stages:
+            - regex:
+                expression: '^(\s+)?\[(?P<time>\d{4}-\d{2}-\d{2}\s\d{1,2}:\d{2}:\d{2}.\d{3})\]\s+(?P<level>\w+)\s+(?P<event>.*)'
+            - output:
+                source: event
+            - labels:
+                level:
+                class_name:
+    docker_sd_configs:
+      - host: "unix:///var/run/docker.sock"
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_id']
+        regex: '(.*)'
+        action: replace
+        target_label: 'docker_container_id'
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        action: replace
+        target_label: 'docker_container_name'
+      - source_labels: ['__meta_docker_container_log_stream']
+        regex: '(.*)'
+        action: replace
+        target_label: 'stream'
+  ##########################################################
+  - job_name: singleline
+    pipeline_stages:
+    static_configs:
+    - labels:
+        job: logs-from-singleline-file
+        host: yourhost
+        __path__: /etc/promtail/logs/singleline.log
+  ##########################################################
+  - job_name: multiline
+    pipeline_stages:
+      - multiline:
+          firstline: '^\d{4}-\d{2}-\d{2}\s\d{1,2}:\d{2}:\d{2}.\d{3}\s+'
+          max_wait_time: 3s
+    static_configs:
+    - labels:
+        job: logs-from-multiline-file
+        host: yourhost
+        __path__: /etc/promtail/logs/multyline.log

@@ -1,0 +1,21 @@
+global:
+  scrape_interval: "1m"
+  scrape_timeout: "10s"
+  evaluation_interval: "1m"
+
+scrape_configs:
+  - job_name: pushgateway
+    metrics_path: /metrics
+    honor_labels: true
+    honor_timestamps: true
+    scheme: http
+    follow_redirects: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    static_configs:
+      - targets:
+          - pushgateway:9091

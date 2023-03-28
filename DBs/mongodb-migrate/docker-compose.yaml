@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  mongo-migrate:
+    image: mongo:4.4-focal
+    network_mode: host
+    env_file:
+      - .env
+    user: root
+    entrypoint: "bash /scripts/migrate.sh"
+    working_dir: "/scripts/"
+    volumes:
+      - ./:/scripts/
+
+  local-mongo:
+    image: mongo:4.4-focal
+    network_mode: host
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "mongoadmin"
+      MONGO_INITDB_ROOT_PASSWORD: "mongoadmin"
+    ports:
+      - "27017:27017"

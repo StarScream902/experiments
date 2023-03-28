@@ -1,0 +1,15 @@
+---
+openvpn_port: 1195
+openvpn_sync_certs: true
+openvpn_server_netmask: "255.255.255.0"
+openvpn_server_network: "10.0.30.0"
+openvpn_masquerade_not_snat: true
+openvpn_redirect_gateway: false
+openvpn_push:
+  - "route 7.0.0.0 255.255.255.0"
+openvpn_set_dns: false
+openvpn_compression: ""
+openvpn_firewall: "iptables"
+openvpn_server_hostname: "{{ ansible_host }}"
+clients:
+  - "Andrew_Svezhintsv"

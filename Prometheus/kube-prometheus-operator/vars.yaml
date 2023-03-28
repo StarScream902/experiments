@@ -1,0 +1,62 @@
+fullnameOverride: "kube-prometheus-stack"
+
+namespaceOverride: "monitoring"
+
+# prometheusOperator:
+#   tls:
+#     enabled: false
+#   admissionWebhooks:
+#     enabled: false
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      nginx.ingress.kubernetes.io/whitelist-source-range: 10.200.0.0/24
+      cert-manager.io/cluster-issuer: "letsencrypt-prod-issuer"
+    hosts:
+      - prometheus.dev.project.com
+    tls:
+      - secretName: prometheus-dev-project-com-tls
+        hosts:
+          - prometheus.dev.project.com
+
+grafana:
+  enabled: false
+
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+
+coreDns:
+  service:
+    selector:
+      k8s-app: "kube-dns"
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeletService:
+  enabled: false
+kubelet:
+  serviceMonitor:
+    https: true

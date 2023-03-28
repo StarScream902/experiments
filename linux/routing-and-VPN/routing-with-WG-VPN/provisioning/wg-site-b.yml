@@ -1,0 +1,7 @@
+---
+- name: Configure WG client (site B)
+  hosts: site_b
+  become: true
+
+  roles:
+    - role: wireguard

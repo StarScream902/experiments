@@ -1,0 +1,27 @@
+---
+- name: Configure WG server (site A)
+  hosts: ovpn_srv
+  become: true
+  vars:
+    ovpn_release: "release/2.6"
+    openvpn_package_name: "openvpn=2.5.5-1ubuntu3.1"
+    # openvpn_package_name: "openvpn=2.6.0-jammy0"
+
+  tasks:
+    - name: Adding repo key
+      ansible.builtin.shell:
+        cmd: "curl -fsSL https://swupdate.openvpn.net/repos/repo-public.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/openvpn-repo-public.gpg"
+
+    - name: Adding the OpenVPN repo
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/openvpn-repo-public.gpg] http://build.openvpn.net/debian/openvpn/{{ ovpn_release }} {{ ansible_distribution_release }} main"
+        state: present
+        update_cache: true
+
+    - name: Inclide role
+      ansible.builtin.include_role:
+        name: ansible-role-openvpn
+
+    - name: Install iperf
+      ansible.builtin.package:
+        name: iperf

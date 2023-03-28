@@ -1,0 +1,29 @@
+2023-02-28 07:42:32.258  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.kafka.KafkaConsumer          : [traceId = {
+"messageBody":"{"countOfNewMessageInAllChannels":0,"content":[],"number":0,"size":50,"totalPages":0,"totalElements":0,"numberOfElements":0,"isLast":true,"isFirst":true,"isEmpty":true}",
+"headers":{X-APPLICATION-NAME=chat-service, X-USER-ID=L1JJHWBMVWSRZGCC, X-EVENT-NAME=get_all_user_channel, X-TRACE-ID=2e367262-9b54-4e33-b371-c4963dee1468, X-TIMESTAMP=2023-02-28T0
+}]Received  message 2e367262-9b54-4e33-b371-c4963dee1468
+2023-02-28 07:42:32.259  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.websocket.MessageSubscriber  : [traceId = 2e367262-9b54-4e33-b371-c4963dee1468]Message was sent to websocket session. U
+2023-02-28 07:42:32.263  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.kafka.KafkaConsumer          : [traceId = {
+"messageBody":"{"content":[{"userId":"9KMPDQRXWEYGUCYP","nickname":"ProPlayer","username":"ProPlayer","publicName":"ProPlayer","realName":" Joe","country":"US","avatarId":"bc7b1aee-9ad3
+"headers":{X-APPLICATION-NAME=api-gateway, X-TIMESTAMP=2023-02-28T07:42:32.088528001Z, X-STATUS=SUCCESS, X-USER-ID=L1JJHWBMVWSRZGCC, X-EVENT-NAME=find_user_profile, X-TRACE-ID=b976
+}]Received  message b9760342-8cea-45fc-a78f-7c241f1ccab4
+2023-02-28 07:42:32.264  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.websocket.MessageSubscriber  : [traceId = b9760342-8cea-45fc-a78f-7c241f1ccab4]Message was sent to websocket session. U
+2023-02-28 07:42:32.268  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.kafka.KafkaConsumer          : [traceId = {
+"messageBody":"{"countOfNewMessageInAllChannels":0,"content":[],"number":0,"size":50,"totalPages":0,"totalElements":0,"numberOfElements":0,"isLast":true,"isFirst":true,"isEmpty":true}",
+"headers":{X-APPLICATION-NAME=chat-service, X-USER-ID=L1JJHWBMVWSRZGCC, X-EVENT-NAME=get_all_user_channel, X-TRACE-ID=0d3d39f2-540d-4fb6-a1dc-7ac10f1a5ef6, X-TIMESTAMP=2023-02-28T0
+}]Received  message 0d3d39f2-540d-4fb6-a1dc-7ac10f1a5ef6
+2023-02-28 07:42:32.269  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.websocket.MessageSubscriber  : [traceId = 0d3d39f2-540d-4fb6-a1dc-7ac10f1a5ef6]Message was sent to websocket session. U
+2023-02-28 07:42:32.362  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.kafka.KafkaConsumer          : [traceId = {
+"messageBody":"{"teamName":"","friendRequestSent":false,"country":"","city":"","friendRequestsCount":0,"about":"","avatarThumbSrc":["https://s3.fr-par.scw.cloud/sandbox-media-storage/d8
+"headers":{X-APPLICATION-NAME=api-gateway, X-TIMESTAMP=2023-02-28T07:42:32.098081670Z, X-STATUS=SUCCESS, X-USER-ID=L1JJHWBMVWSRZGCC, X-EVENT-NAME=get_user_profile, X-TRACE-ID=c0527
+}]Received  message c0527eb9-d43f-4875-add7-f02bbf270d66
+2023-02-28 07:42:32.363  INFO 7 --- [ntainer#0-0-C-1] c.i.gateway.websocket.MessageSubscriber  : [traceId = c0527eb9-d43f-4875-add7-f02bbf270d66]Message was sent to websocket session. U
+2023-02-28 07:42:49.186  INFO 7 --- [or-http-epoll-2] com.gateway.LoggingFilter     :
+Endpoint GET /actuator/health/readiness
+Cookies: {}
+Headers: [Host:"10.42.0.103:8081", User-Agent:"kube-probe/1.23", Accept:"*/*", Connection:"close"]
+
+2023-02-28 07:42:49.186  INFO 7 --- [or-http-epoll-3] com.gateway.LoggingFilter     :
+Endpoint GET /actuator/health/liveness
+Cookies: {}
+Headers: [Host:"10.42.0.103:8081", User-Agent:"kube-probe/1.23", Accept:"*/*", Connection:"close"]

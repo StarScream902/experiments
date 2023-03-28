@@ -1,0 +1,17 @@
+---
+- name: Install netaddr package
+  ansible.builtin.pip:
+    name: netaddr
+    extra_args: --user
+  delegate_to: localhost
+  become: false
+
+- name: Do ping for establishing a tunnel to a peer
+  ansible.builtin.command:
+    cmd: "ping -c 5 {{ wg_peer.allowed_ips | split(',') | first | ansible.utils.ipaddr('address') }}"
+  retries: 5
+  delay: 1
+  loop: "{{ wg_int.wireguard_peers }}"
+  loop_control:
+    loop_var: 'wg_peer'
+  when: wg_peer.endpoint is defined

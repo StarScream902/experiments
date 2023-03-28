@@ -1,0 +1,16 @@
+.env
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+.terragrunt-cache
+*.tfvars
+backend.tf
+providers.tf
+terraform.tfstate
+terraform.tfstate.backup
+vars.hcl
+vars.tf
+
+# Vagrant
+.vagrant

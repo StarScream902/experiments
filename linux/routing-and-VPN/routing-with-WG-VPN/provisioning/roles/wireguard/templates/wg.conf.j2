@@ -1,0 +1,25 @@
+[Interface]
+Address = {{ item.address }}
+{% if item.listen_port is defined %}
+ListenPort = {{ item.listen_port }}
+{% endif %}
+PrivateKey = {{ item.private_key }}
+{% if item.post_ups is defined %}
+{%  for post_up in item.post_ups %}
+PostUp = {{ post_up }}
+{%  endfor %}
+{% endif %}
+{% if item.post_downs is defined %}
+{%  for post_down in item.post_downs %}
+PostDown = {{ post_down }}
+{%  endfor %}
+{% endif %}
+
+{% for wireguard_peer in item.wireguard_peers %}
+[Peer]
+PublicKey = {{ wireguard_peer.public_key }}
+{% if wireguard_peer.endpoint is defined %}
+Endpoint = {{ wireguard_peer.endpoint }}
+{% endif %}
+AllowedIPs = {{ wireguard_peer.allowed_ips }}
+{% endfor %}

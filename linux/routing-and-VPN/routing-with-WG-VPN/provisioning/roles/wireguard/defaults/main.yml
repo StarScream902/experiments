@@ -1,0 +1,3 @@
+---
+# defaults file for wireguard
+wireguard_basedir: "/etc/wireguard"

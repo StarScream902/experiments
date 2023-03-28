@@ -1,0 +1,70 @@
+---
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /(master|main|develop|release\/.*)/'
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      when: never  # Prevent pipeline run for push event
+    - when: always # Run pipeline for all other cases
+
+.default:
+  stage: build_push
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - |
+      echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(echo -n ${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD} | base64)\"}}}" \
+      > /kaniko/.docker/config.json
+  script:
+    - cd ${directory}
+    - export IMAGE=${CI_REGISTRY_IMAGE}/${directory}:${DOCKER_IMAGE_TAG}
+    - /kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $IMAGE
+
+variables:
+  DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+
+stages:
+  - build_push
+
+# mongodb-tests #############
+
+build_push mongodb-tests:
+  extends: .default
+  only:
+    changes:
+      - mongodb/*
+  variables:
+    directory: "mongodb"
+
+# helm-deploy ###############
+
+build_push helm-deploy:
+  extends: .default
+  only:
+    changes:
+      - helm-deploy/*
+  variables:
+    directory: "helm-deploy"
+
+# ansible-deploy ############
+
+build_push ansible:
+  extends: .default
+  only:
+    changes:
+      - ansible/*
+  variables:
+    directory: "ansible"
+
+# mongo-backup ##############
+
+build_push mongo-backup:
+  extends: .default
+  only:
+    changes:
+      - mongodb-backup/*
+  variables:
+    directory: "mongodb-backup"
+
+#############################

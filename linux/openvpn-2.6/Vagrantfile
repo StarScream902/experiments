@@ -1,0 +1,23 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "ubuntu/jammy64"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 512
+    vb.cpus = 1
+  end
+
+  config.vm.define "ovpn_srv" do |ovpn_srv|
+    ovpn_srv.vm.hostname = "ovpnsrv"
+    ovpn_srv.vm.network "private_network", ip: "7.0.0.2", netmask: "24"
+    # ovpn_srv.vm.network "forwarded_port", guest: 1195, host: 1195, protocol: "udp"
+    ovpn_srv.vm.network "public_network", bridge: "enp4s0"
+    ovpn_srv.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/ovpn.yml"
+      ansible.groups = {
+        "ovpn_srv" => ["ovpn_srv"]
+      }
+    end
+  end
+
+end

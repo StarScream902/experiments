@@ -1,0 +1,51 @@
+---
+# tasks file for wireguard
+- name: Ensure Wireguard userland tools and dependencies
+  ansible.builtin.package:
+    name:
+      - 'wireguard-tools'
+      - 'procps'
+      - 'iptables'
+
+- name: Ensure config snippet dir
+  ansible.builtin.file:
+    path: "{{ wireguard_basedir }}"
+    state: 'directory'
+    mode: 0700
+    owner: 'root'
+    group: 'root'
+
+- name: Ensure wg config
+  ansible.builtin.template:
+    src: 'wg.conf.j2'
+    dest: "{{ wireguard_basedir }}/{{ item.name }}.conf"
+    mode: 0600
+    owner: 'root'
+    group: 'root'
+  loop: "{{ wireguard_interfaces }}"
+  register: wg_int_status
+
+- name: Ensure service
+  ansible.builtin.service:
+    name: "wg-quick@{{ wg_int['name'] }}"
+    state: 'started'
+    enabled: true
+  loop: "{{ wireguard_interfaces }}"
+  # no_log: "{{ wireguard_no_log }}"
+  loop_control:
+    loop_var: 'wg_int'
+
+- name: Restart changed interface
+  ansible.builtin.service:
+    name: "wg-quick@{{ item.item.name }}"
+    state: restarted
+  # no_log: "{{ wireguard_no_log }}"
+  when: item.changed
+  loop: "{{ wg_int_status.results }}"
+
+- name: Do ping for establishing a tunnel for all interfaces
+  ansible.builtin.include_tasks:
+    file: ping-endpoint.yaml
+  loop: "{{ wireguard_interfaces }}"
+  loop_control:
+    loop_var: 'wg_int'

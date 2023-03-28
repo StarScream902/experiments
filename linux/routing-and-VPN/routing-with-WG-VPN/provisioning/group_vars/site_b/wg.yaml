@@ -1,0 +1,12 @@
+---
+wireguard_interfaces:
+  - name: 'wg0'
+    address: '10.9.0.2/24'
+    private_key: '4CL7aaCidDhCktS/2zAmuZikQ+HVL270DhRf4cCUf3Y='
+    post_ups:
+      - sysctl -w net.ipv4.ip_forward=1
+    wireguard_peers:
+      - name: 'aws-corp-vpn'
+        endpoint: 7.0.0.2:51820
+        public_key: 'V0qPaHGiNYSJWAURypC7OBSsFMIKNnkndy0J44WUmWc='
+        allowed_ips: '10.9.0.1/32,192.168.0.0/24'

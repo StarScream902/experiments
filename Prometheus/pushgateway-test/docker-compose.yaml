@@ -1,0 +1,41 @@
+version: '3.7'
+
+x-common: &common
+  image: gradle:jdk11
+  working_dir: /build
+  volumes:
+    - ./:/build
+
+services:
+  build-test:
+    <<: *common
+    command: gradle build -x test --no-daemon --stacktrace -i
+
+  run-app:
+    <<: *common
+    environment:
+      server_port: 8081
+      logging_level_root: "INFO"
+      management_endpoints_web_exposure_include: "prometheus,health,info,metrics"
+      management_endpoint_health_probes_enabled: true
+      management_health_livenessState_enabled: true
+      management_health_readinessState_enabled: true
+      management_server_base_path: "/"
+      management_server_port: "8081"
+      management_metrics_export_prometheus_pushgateway_base_url: "http://pushgateway:9091"
+      management_metrics_export_prometheus_pushgateway_enabled: true
+      management_metrics_export_prometheus_pushgateway_job: "JavaApp"
+    command: java -jar build/libs/JavaApp-0.0.1-SNAPSHOT.jar
+    network_mode: host
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    ports:
+      - 9091:9091
