@@ -12,7 +12,12 @@ def worker():
     while True:
         pass
 
-@app.route('/cpu_load', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
+def cpu_load():
+    return "OK"
+
+
+@app.route('/cpu_load', methods=['GET'])
 def cpu_load():
     num_processes = multiprocessing.cpu_count()
 
