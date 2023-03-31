@@ -13,7 +13,7 @@ def worker():
         pass
 
 @app.route('/', methods=['GET'])
-def cpu_load():
+def root():
     return "OK"
 
 
