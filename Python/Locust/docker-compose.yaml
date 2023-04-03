@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  tests:
+    image: python:3.10
+    network_mode: host
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    env_file:
+      - .env
+    entrypoint: "bash -c"
+    command:
+      - |
+        pip install locust
+        locust --host ${LOCUST_HOST}
