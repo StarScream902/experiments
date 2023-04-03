@@ -43,7 +43,7 @@ def cpu_load():
                 <p>{hostname}</p>
                 <p>CPU AVG load: {cpu_avg_load}</p>
                 <p>Virt mem info: {mem_stats}</p>
-              '''
+    '''
 
     return body
 
