@@ -4,7 +4,7 @@ include "root" {
 }
 
 terraform {
-  source = "git::git@github.com:terraform-aws-modules/terraform-aws-key-pair.git/?ref=v2.0.2"
+  source = "git::git@github.com:terraform-aws-modules//terraform-aws-key-pair.git/?ref=v2.0.2"
 }
 
 locals {
@@ -14,8 +14,8 @@ locals {
 }
 
 inputs = {
-  key_name = "starscream902_aws_test"
-  public_key = local.ssh_keys.locals.starscream902_aws_test
+  key_name    = "starscream902_aws_test"
+  public_key  = local.ssh_keys.locals.starscream902_aws_test
   tags = {
     Terraform   = "true"
     Environment = local.env_vars.locals.environment.full
