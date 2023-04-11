@@ -12,8 +12,8 @@ dependency "vpc" {
 }
 
 # Security Groups ############################################
-dependency "internet-to-alb-http" {
-  config_path = "${get_terragrunt_dir()}/..//sg/internet-to-alb-http"
+dependency "internet-to-pub-http" {
+  config_path = "${get_terragrunt_dir()}/..//sg/internet-to-pub-http"
 }
 
 dependency "egress-to-anywhere" {
@@ -32,7 +32,7 @@ inputs = {
   subnets             = dependency.vpc.outputs.public_subnets
 
   security_groups     = [
-    dependency.internet-to-alb-http.outputs.security_group_id,
+    dependency.internet-to-pub-http.outputs.security_group_id,
     dependency.egress-to-anywhere.outputs.security_group_id
   ]
 

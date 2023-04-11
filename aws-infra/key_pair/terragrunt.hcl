@@ -4,7 +4,7 @@ include "root" {
 }
 
 terraform {
-  source = "git::git@github.com:terraform-aws-modules//terraform-aws-key-pair.git/?ref=v2.0.2"
+  source = "git::git@github.com:terraform-aws-modules/terraform-aws-key-pair.git//?ref=v2.0.2"
 }
 
 locals {

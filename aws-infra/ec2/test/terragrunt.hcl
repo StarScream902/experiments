@@ -4,7 +4,7 @@ include "root" {
 }
 
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ec2-instance.git/?ref=v5.3.0"
+  source = "git::git@github.com:terraform-aws-modules/terraform-aws-ec2-instance.git//?ref=v4.3.0"
 }
 
 dependency "vpc" {
@@ -12,16 +12,16 @@ dependency "vpc" {
 }
 
 dependency "key_pair" {
-  config_path = "${get_terragrunt_dir()}/..//key_pair"
+  config_path = "${get_terragrunt_dir()}/../..//key_pair"
 }
 
 # Security Groups ############################################
-dependency "internet-to-ec2-ssh" {
-  config_path = "${get_terragrunt_dir()}/..//sg/internet-to-ec2-ssh"
+dependency "internet-to-pub-ssh" {
+  config_path = "${get_terragrunt_dir()}/../..//sg/internet-to-pub-ssh"
 }
 
 dependency "egress-to-anywhere" {
-  config_path = "${get_terragrunt_dir()}/..//sg/egress-to-anywhere"
+  config_path = "${get_terragrunt_dir()}/../..//sg/egress-to-anywhere"
 }
 #################################################################
 
@@ -37,10 +37,10 @@ inputs = {
   key_name                = dependency.key_pair.outputs.key_pair_name
   monitoring              = true
   vpc_security_group_ids  = [
-    dependency.egress-to-enywhere.security_group_id,
-    dependency.internet-to-ec2-ssh.security_group_id
+    dependency.egress-to-anywhere.outputs.security_group_id,
+    dependency.internet-to-pub-ssh.outputs.security_group_id
     ]
-  subnet_id               = dependency.vpc.outputs.public_subnets
+  subnet_id               = dependency.vpc.outputs.public_subnets[0]
 
   tags = {
     Terraform   = "true"

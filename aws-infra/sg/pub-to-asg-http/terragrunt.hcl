@@ -4,7 +4,7 @@ include "root" {
 }
 
 terraform {
-  source = "git@github.com:terraform-aws-modules/terraform-aws-security-group.git/?ref=v4.17.1"
+  source = "git::git@github.com:terraform-aws-modules/terraform-aws-security-group.git//?ref=v4.17.1"
 }
 
 dependency "vpc" {
@@ -17,7 +17,7 @@ inputs = {
   vpc_id      = dependency.vpc.outputs.vpc_id
 
   # Allow ingress rules to be accessed only within current VPC
-  ingress_cidr_blocks = dependency.vpc.outputs.public_subnets
+  ingress_cidr_blocks = dependency.vpc.outputs.public_subnets_cidr_blocks
 
   # Allow all rules for all protocols
   ingress_rules = ["http-80-tcp"]
