@@ -37,12 +37,15 @@ def cpu_load():
         p.terminate()
 
     hostname = str(socket.gethostname())
+    cpu_count = str(psutil.cpu_count())
     cpu_avg_load = str(psutil.getloadavg())
     mem_stats = str(psutil.virtual_memory())
-    body = f'''<!doctype html>
-                <p>{hostname}</p>
-                <p>CPU AVG load: {cpu_avg_load}</p>
-                <p>Virt mem info: {mem_stats}</p>
+    body = f'''
+        <!doctype html>
+        <p>Hostname: {hostname}</p>
+        <p>Number of CPU: {cpu_count}
+        <p>CPU AVG load: {cpu_avg_load}</p>
+        <p>Virt mem info in bytes: {mem_stats}</p>
     '''
 
     return body

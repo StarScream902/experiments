@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   tests:
-    image: app:local
+    image: starscream902/cpu-load-app:2023-04
     build: .
     network_mode: host
     volumes:
