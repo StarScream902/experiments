@@ -9,6 +9,8 @@ services:
     working_dir: /workspace
     env_file:
       - .env
+    extra_hosts:
+      - example.com:${host_for_test}
     entrypoint: "bash -c"
     command:
       - |
