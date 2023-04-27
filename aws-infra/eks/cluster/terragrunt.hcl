@@ -48,7 +48,7 @@ inputs = {
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
     general = {
-      name            = "general-ng-${local.env_vars.locals.environment.short}-eks-cluster"
+      name            = "general-eks-ng"
       instance_types  = ["t3a.medium"]
       min_size        = 1
       max_size        = 3
