@@ -15,3 +15,6 @@ vars.tf
 
 # Vagrant
 .vagrant
+
+# VSCode
+.vscode
