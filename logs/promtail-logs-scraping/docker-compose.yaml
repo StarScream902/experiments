@@ -9,6 +9,7 @@ services:
       - 3000:3000
     volumes:
       - grafana:/var/lib/grafana
+
   loki:
     image: grafana/loki:latest
     ports:
@@ -20,7 +21,7 @@ services:
     image: grafana/promtail:latest
     volumes:
       - ./promtail/:/etc/promtail/
-      - /var/lib/docker/:/var/lib/docker/
-      - /var/run/docker.sock:/var/run/docker.sock
+      # - /var/lib/docker/:/var/lib/docker/
+      # - /var/run/docker.sock:/var/run/docker.sock
       - /var/log/:/var/log/
-    command: -config.file /etc/promtail/config.yaml
+    command: -config.file /etc/promtail/config.yaml #--inspect #--dry-run 
